@@ -1,81 +1,19 @@
-name: Autotag
+# example 1: on push to master
+name: Bump version
 on:
   push:
     branches:
       - main
-
 jobs:
   build:
     runs-on: ubuntu-22.04
-    strategy:
-
-      matrix:
-        node: 
-        - 16.16.0
-
     steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'
 
-      - name: Checkout do repositório
-        uses: actions/checkout@v3
-
-#      - name: Autotag
-#        uses: phish108/autotag-action@1.1.53
-#        with:
-#          github-token: ${{ secrets.GITHUB_TOKEN}}
-#          with-v: "true"
-
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.55.0 # Don't use @master unless you're happy to test the latest version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: true
-          DEFAULT_BUMP: none
-
-      - name: Set Node.js ${{ matrix.node }}
-#      - name: Set Node.js 16.16.0
-        uses: actions/setup-node@v3
-        with:
-#          node-version: 16.16.0 
-          node-version: ${{ matrix.node }}
-
-#      - name: Run install
-#        uses: borales/actions-yarn@v4
-#        with:
-#          cmd: install # will run `yarn install` command
-
-#      - name: Build production bundle
-#        uses: borales/actions-yarn@v4
-#        with:
-#          cmd: build:prod # will run `yarn build:prod` command
-
-#      - name: Set up QEMU
-#        uses: docker/setup-qemu-action@v2
-
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v2
-
-#      - name: Login to Docker Hub
-#        uses: docker/login-action@v2
-#        with:
-#          username: ${{ secrets.DOCKERHUB_USERNAME }}
-#          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-#      - name: Build and push
-#        uses: docker/build-push-action@v4
-#        with:
-#          context: .
-#          push: true
-#          tags: |
-#            ${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ steps.vars.outputs.tags }}            
-
-#      - name: Deploy Frontend
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.SSH_HOST }}
-#          username: ${{ secrets.SSH_USER }}
-#          key: ${{ secrets.SSH_PRIVATE_KEY }}
-#          script: |
-#            docker pull ipqtecno/frontend:test
-#            docker stop frontend
-#            docker rm frontend
-#            docker run -d -p 3000:3000 --restart always --name=frontend ipqtecno/frontend:test
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@1.55.0 # Don't use @master unless you're happy to test the latest version
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WITH_V: true
