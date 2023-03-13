@@ -1,4 +1,5 @@
 # example 1: on push to master
+
 name: Bump version
 on:
   push:
@@ -6,15 +7,11 @@ on:
       - main
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: '0'
-
+    - uses: actions/checkout@master
     - name: Bump version and push tag
-      uses: anothrNick/github-tag-action@1.55.0 # Don't use @master unless you're happy to test the latest version
+      uses: anothrNick/github-tag-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        WITH_V: true
-        DEFAULT_BUMP: none
+        REPO_OWNER: anothrNick        
